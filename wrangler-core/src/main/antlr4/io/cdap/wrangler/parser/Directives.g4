@@ -88,7 +88,7 @@ expression
   ;
 
 forStatement
- : 'for' '(' Identifier '=' expression ';' expression ';' expression ')' '{'  statements '}'
+ : 'for' '(' Identifier '=' expression ';' telewizexpression ';' expression ')' '{'  statements '}'
  ;
 
 macro
@@ -140,7 +140,7 @@ numberRange
  ;
 
 value
- : String | Number | Column | Bool
+ : String | Number | Column | Bool | BYTE_SIZE | TIME_DURATION
  ;
 
 ecommand
@@ -302,6 +302,14 @@ Comment
 Space
  : [ \t\r\n\u000C]+ -> skip
  ;
+
+// Fragments for byte and time units
+fragment BYTE_UNIT: ('b'|'B'|'kb'|'KB'|'mb'|'MB'|'gb'|'GB'|'tb'|'TB');
+fragment TIME_UNIT: ('ns'|'NS'|'us'|'US'|'ms'|'MS'|'s'|'S'|'m'|'M'|'h'|'H');
+
+// Lexer tokens for byte size and time duration
+BYTE_SIZE: Number BYTE_UNIT;
+TIME_DURATION: Number TIME_UNIT;
 
 fragment Int
  : '-'? [1-9] Digit* [L]*
