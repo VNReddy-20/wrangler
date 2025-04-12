@@ -25,11 +25,44 @@ More [here](wrangler-docs/upcoming-features.md) on upcoming features.
   * **User Defined Directives, also known as UDD**, allow you to create custom functions to transform records within CDAP DataPrep or a.k.a Wrangler. CDAP comes with a comprehensive library of functions. There are however some omissions, and some specific cases for which UDDs are the solution. Additional information on how you can build your custom directives [here](wrangler-docs/custom-directive.md).
     * Migrating directives from version 1.0 to version 2.0 [here](wrangler-docs/directive-migration.md)
     * Information about Grammar [here](wrangler-docs/grammar/grammar-info.md)
-    * Various `TokenType` supported by system [here](../api/src/main/java/io/cdap/wrangler/api/parser/TokenType.java)
+    * Various `TokenType` supported by system [here](../api/src/main/java/io.cdap/wrangler/api/parser/TokenType.java)
     * Custom Directive Implementation Internals [here](wrangler-docs/udd-internal.md)
 
   * A new capability that allows CDAP Administrators to **restrict the directives** that are accessible to their users.
 More information on configuring can be found [here](wrangler-docs/exclusion-and-aliasing.md)
+
+  * **Byte Size and Time Duration Parsers**
+
+    This project has been enhanced to support parsing byte size (e.g., "10KB", "1.5MB") and time duration (e.g., "150ms", "2.1s") units in Wrangler recipes.
+
+    ### New Directive: aggregate-stats
+
+    The `aggregate-stats` directive aggregates byte sizes and time durations across rows, outputting totals in megabytes (MB) and seconds.
+
+    **Usage**:
+    
+- `size-column`: Source column containing byte sizes (e.g., "10KB").
+- `time-column`: Source column containing time durations (e.g., "150ms").
+- `total-size-column`: Output column for total size in MB.
+- `total-time-column`: Output column for total time in seconds.
+
+**Example**:
+
+**Input**:
+| data_transfer_size | response_time |
+|--------------------|--------------|
+| 10KB              | 150ms        |
+| 1.5MB             | 2.1s         |
+| 1024B             | 1ms          |
+
+**Output**:
+| total_size_mb | total_time_sec |
+|---------------|----------------|
+| 1.536         | 2.251          |
+
+### Supported Units
+- Byte Size: b, kb, mb, gb, tb (case-insensitive).
+- Time Duration: ns, us, ms, s, m, h (case-insensitive).
 
 ## Demo Videos and Recipes
 
@@ -37,29 +70,29 @@ Videos and Screencasts are best way to learn, so we have compiled simple, short 
 
 ### Videos
 
-  * [SCREENCAST] [Creating Lookup Dataset and Joining](https://www.youtube.com/watch?v=Nc1b0rsELHQ)
-  * [SCREENCAST] [Restricted Directives](https://www.youtube.com/watch?v=71EcMQU714U)
-  * [SCREENCAST] [Parse Excel files in CDAP](https://www.youtube.com/watch?v=su5L1noGlEk)
-  * [SCREENCAST] [Parse File As AVRO File](https://www.youtube.com/watch?v=tmwAw4dKUNc)
-  * [SCREENCAST] [Parsing Binary Coded AVRO Messages](https://www.youtube.com/watch?v=Ix_lPo-PDJY)
-  * [SCREENCAST] [Parsing Binary Coded AVRO Messages & Protobuf messages using schema registry](https://www.youtube.com/watch?v=LVLIdWnUX1k)
-  * [SCREENCAST] [Quantize a column - Digitize](https://www.youtube.com/watch?v=VczkYX5SRtY)
-  * [SCREENCAST] [Data Cleansing capability with send-to-error directive](https://www.youtube.com/watch?v=aZd5H8hIjDc)
-  * [SCREENCAST] [Building Data Prep from the GitHub source](https://youtu.be/pGGjKU04Y38)
-  * [VOICE-OVER] [End-to-End Demo Video](https://youtu.be/AnhF0qRmn24)
-  * [SCREENCAST] [Ingesting into Kudu](https://www.youtube.com/watch?v=KBW7a38vlUM)
-  * [SCREENCAST] [Realtime HL7 CCDA XML from Kafka into Time Parititioned Parquet](https://youtu.be/0fqNmnOnD-0)
-  * [SCREENCAST] [Parsing JSON file](https://youtu.be/vwnctcGDflE)
-  * [SCREENCAST] [Flattening arrays](https://youtu.be/SemHxgBYIsY)
-  * [SCREENCAST] [Data cleansing with send-to-error directive](https://www.youtube.com/watch?v=aZd5H8hIjDc)
-  * [SCREENCAST] [Publishing to Kafka](https://www.youtube.com/watch?v=xdc8pvvlI48)
-  * [SCREENCAST] [Fixed length to JSON](https://www.youtube.com/watch?v=3AXu4m1swuM)
+* [SCREENCAST] [Creating Lookup Dataset and Joining](https://www.youtube.com/watch?v=Nc1b0rsELHQ)
+* [SCREENCAST] [Restricted Directives](https://www.youtube.com/watch?v=71EcMQU714U)
+* [SCREENCAST] [Parse Excel files in CDAP](https://www.youtube.com/watch?v=su5L1noGlEk)
+* [SCREENCAST] [Parse File As AVRO File](https://www.youtube.com/watch?v=tmwAw4dKUNc)
+* [SCREENCAST] [Parsing Binary Coded AVRO Messages](https://www.youtube.com/watch?v=Ix_lPo-PDJY)
+* [SCREENCAST] [Parsing Binary Coded AVRO Messages & Protobuf messages using schema registry](https://www.youtube.com/watch?v=LVLIdWnUX1k)
+* [SCREENCAST] [Quantize a column - Digitize](https://www.youtube.com/watch?v=VczkYX5SRtY)
+* [SCREENCAST] [Data Cleansing capability with send-to-error directive](https://www.youtube.com/watch?v=aZd5H8hIjDc)
+* [SCREENCAST] [Building Data Prep from the GitHub source](https://youtu.be/pGGjKU04Y38)
+* [VOICE-OVER] [End-to-End Demo Video](https://youtu.be/AnhF0qRmn24)
+* [SCREENCAST] [Ingesting into Kudu](https://www.youtube.com/watch?v=KBW7a38vlUM)
+* [SCREENCAST] [Realtime HL7 CCDA XML from Kafka into Time Parititioned Parquet](https://youtu.be/0fqNmnOnD-0)
+* [SCREENCAST] [Parsing JSON file](https://youtu.be/vwnctcGDflE)
+* [SCREENCAST] [Flattening arrays](https://youtu.be/SemHxgBYIsY)
+* [SCREENCAST] [Data cleansing with send-to-error directive](https://www.youtube.com/watch?v=aZd5H8hIjDc)
+* [SCREENCAST] [Publishing to Kafka](https://www.youtube.com/watch?v=xdc8pvvlI48)
+* [SCREENCAST] [Fixed length to JSON](https://www.youtube.com/watch?v=3AXu4m1swuM)
 
 ### Recipes
 
-  * [Parsing Apache Log Files](wrangler-demos/parsing-apache-log-files.md)
-  * [Parsing CSV Files and Extracting Column Values](wrangler-demos/parsing-csv-extracting-column-values.md)
-  * [Parsing HL7 CCDA XML Files](wrangler-demos/parsing-hl7-ccda-xml-files.md)
+* [Parsing Apache Log Files](wrangler-demos/parsing-apache-log-files.md)
+* [Parsing CSV Files and Extracting Column Values](wrangler-demos/parsing-csv-extracting-column-values.md)
+* [Parsing HL7 CCDA XML Files](wrangler-demos/parsing-hl7-ccda-xml-files.md)
 
 ## Available Directives
 
@@ -156,7 +189,8 @@ These directives are currently available:
 | [Stemming Tokenized Words](wrangler-docs/directives/stemming.md)                | Applies the Porter stemmer algorithm for English words           |
 | **Transient Aggregators & Setters**                                    |                                                                  |
 | [Increment Variable](wrangler-docs/directives/increment-variable.md)            | Increments a transient variable with a record of processing.     |
-| [Set Variable](wrangler-docs/directives/set-variable.md)                        | Sets a transient variable with a record of processing.     |
+| [Set Variable](wrangler-docs/directives/set-variable.md)                        | Sets a transient variable with a record of processing.           |
+| [Aggregate Stats](wrangler-docs/directives/aggregate-stats.md)                  | Aggregates byte sizes and time durations into total MB and seconds |
 | **Functions**                                                          |                                                                  |
 | [Data Quality](wrangler-docs/functions/dq-functions.md)                         | Data quality check functions. Checks for date, time, etc.        |
 | [Date Manipulations](wrangler-docs/functions/date-functions.md)                 | Functions that can manipulate date                               |
@@ -174,7 +208,6 @@ rates below are specified as *records/second*.
 | -------------------- | :----------: | ---------: | -------------: | --------: |
 | High (167 Directives) |      426      | 127,946,398 |  82,677,845,324 | 106,367.27 |
 | High (167 Directives) |      426      | 511,785,592 | 330,711,381,296 | 105,768.93 |
-
 
 ## Contact
 
@@ -196,7 +229,6 @@ CDAP IRC Channel: [#cdap on irc.freenode.net](http://webchat.freenode.net?channe
 ### Slack Team
 
 CDAP Users on Slack: [cdap-users team](https://cdap-users.herokuapp.com)
-
 
 ## License and Trademarks
 

@@ -1,0 +1,6 @@
+- Fixing Git repository issues (e.g., author identity, HEAD errors).
+- Modifying Directives.g4 for BYTE_SIZE and TIME_DURATION.
+- Generating ByteSize and TimeDuration classes.
+- Implementing the aggregate-stats directive.
+- Writing unit tests for parsing and aggregation.
+- Updating README with usage instructions.
