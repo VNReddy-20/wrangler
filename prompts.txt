@@ -1,3 +1,4 @@
+I used Grok, created by xAI, to assist with:
 - Fixing Git repository issues (e.g., author identity, HEAD errors).
 - Modifying Directives.g4 for BYTE_SIZE and TIME_DURATION.
 - Generating ByteSize and TimeDuration classes.
